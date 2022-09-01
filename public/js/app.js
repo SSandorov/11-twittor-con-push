@@ -242,4 +242,18 @@ const notificarme = () => {
     }
 };
 
-notificarme();
+// Función que muestra en pantalla los botones de las notificaciones
+const verificaSuscripcion = (activadas) => {
+    // si las notificaciones están activadas
+    if(activadas) {
+        btnActivadas.removeClass('oculto');
+        btnDesactivadas.addClass('oculto');
+    } else {
+        btnActivadas.addClass('oculto');
+        btnDesactivadas.removeClass('oculto');
+    }
+};
+
+// Llamamos a las funciones que gestiona las notificaciones
+// notificarme();
+verificaSuscripcion();
