@@ -219,3 +219,27 @@ window.addEventListener('offline', isOnline );
 
 isOnline();
 
+// Notificaciones
+
+const notificarme = () => {
+    // comprobamos si el navegador web soporta las notificaciones
+    if (!window.Notification) {
+        console.log('Este navegador no soporta notificaciones');
+        return;
+    }
+
+    if (Notification.permission === 'granted') {
+        // en caso de que el usuario ya permitió las notificaciones
+        new Notification('Hola Mundo! - granted');
+    } else if (Notification.permission !== 'denied' || Notification.permission === 'default') {
+        // en caso de que esté negado o aun no haya decidido
+        Notification.requestPermission((permission) => {
+            console.log(permission);
+            if(permission === 'granted') {
+                new Notification('Hola Mundo - pregunta');
+            } 
+        });
+    }
+};
+
+notificarme();
