@@ -51,7 +51,9 @@ router.post('/subscribe', (req, res) => {
 router.get('/key', (req, res) => {
   // añadimos la llave pública generada con la librería web-push y guardada en vapid.json
   const key = push.getKey();
-  res.json(key);
+  // no lo devolvemos como un json, sino como un Uint8array. Como ya aplicamos la lógica
+  // para convertirlo de .json a Uint8array simplemente mandamos nuestra llave
+  res.send(key);
 });
 
 // Ruta para enviar una notificación PUSH  a los usuarios suscritos que nosotros queramos

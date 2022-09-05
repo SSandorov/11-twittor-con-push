@@ -254,6 +254,15 @@ const verificaSuscripcion = (activadas) => {
     }
 };
 
+// Función que devuelve la llave pública
+const getPublicKey = () => {
+    return fetch('api/key')
+    .then(res => res.arrayBuffer())
+    // devolvemos el arreglo como un Uint8array
+    .then(key => new Uint8Array(key));
+};
+
 // Llamamos a las funciones que gestiona las notificaciones
 // notificarme();
 verificaSuscripcion();
+getPublicKey().then(console.log);
