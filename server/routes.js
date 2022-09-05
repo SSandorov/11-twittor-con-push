@@ -1,7 +1,7 @@
 // Routes.js - Módulo de rutas
-var express = require('express');
-var router = express.Router();
-
+const express = require('express');
+const router = express.Router();
+const push = require('./push.js');
 
 const mensajes = [
 
@@ -49,7 +49,9 @@ router.post('/subscribe', (req, res) => {
 
 // Ruta para almacenar la llave pública del cliente
 router.get('/key', (req, res) => {
-  res.json('Key público');
+  // añadimos la llave pública generada con la librería web-push y guardada en vapid.json
+  const key = push.getKey();
+  res.json(key);
 });
 
 // Ruta para enviar una notificación PUSH  a los usuarios suscritos que nosotros queramos
