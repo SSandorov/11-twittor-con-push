@@ -40,6 +40,23 @@ router.post('/', function (req, res) {
   });
 });
 
+// Definimos nuevas rutas
 
+// Ruta para almacenar la suscripción
+router.post('/subscribe', (req, res) => {
+  res.json('subscribe');
+});
+
+// Ruta para almacenar la llave pública del cliente
+router.get('/key', (req, res) => {
+  res.json('Key público');
+});
+
+// Ruta para enviar una notificación PUSH  a los usuarios suscritos que nosotros queramos
+// Es una funcionalidad que no se controla con un servicio REST, sino que se hace desde
+// el lado del servidor por seguridad, pero por fines educativos lo hacemos de esta manera
+router.post('/push', (req, res) => {
+  res.json('Notificación push');
+});
 
 module.exports = router;
