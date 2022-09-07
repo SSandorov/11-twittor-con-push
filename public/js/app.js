@@ -1,7 +1,7 @@
 
 var url = window.location.href;
 var swLocation = '/twittor/sw.js';
-
+var swRegister;
 
 if ( navigator.serviceWorker ) {
 
@@ -10,8 +10,17 @@ if ( navigator.serviceWorker ) {
         swLocation = '/sw.js';
     }
 
+    // es buena práctica cargar el sw una vez que toda la página esté cargada
+    // para ello implementamos el siguiente código
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register( swLocation )
+        .then((register) => {
+            swRegister = register;
+            swRegister.pushManager.getSubscription()
+            .then(verificaSuscripcion);
+        });
+    });
 
-    navigator.serviceWorker.register( swLocation );
 }
 
 
@@ -264,5 +273,24 @@ const getPublicKey = () => {
 
 // Llamamos a las funciones que gestiona las notificaciones
 // notificarme();
-verificaSuscripcion();
-getPublicKey().then(console.log);
+// verificaSuscripcion(); // ya lo hemos implementado al momento de cargar el sw
+// getPublicKey().then(console.log);
+
+// Gestionamos la activación de la suscripción cuando se hace click sobre el botón
+btnDesactivadas.on('click', () => {
+    if(!swRegister) {
+        return console.log('No hay registro de SW');
+    }
+
+    getPublicKey().then((key) => {
+        swRegister.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: key
+        })
+        .then(res => res.toJSON())
+        .then((suscripcion) => {
+            console.log(suscripcion);
+            verificaSuscripcion(suscripcion);
+        });
+    });
+});
