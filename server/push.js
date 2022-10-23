@@ -30,6 +30,8 @@ module.exports.addSubscription = (suscripcion) => {
 
 module.exports.sendPush = (post) => {
     suscripciones.forEach( (suscripcion, i) => {
-        webpush.sendNotification(suscripcion, post.titulo).then().catch(console.log);
+        webpush.sendNotification(suscripcion, JSON.stringify(post))
+        .then()
+        .catch(console.log);
     } );
 };
