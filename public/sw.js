@@ -132,3 +132,14 @@ self.addEventListener('sync', e => {
 
 
 });
+
+// escuchar push
+self.addEventListener('push', e => {
+    // console.log(e);
+    console.log(e.data.text());
+
+    const title = e.data.text();
+    const options = {};
+
+    e.waitUntil( self.registration.showNotification(title, options) );
+});

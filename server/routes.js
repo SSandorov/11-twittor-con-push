@@ -64,7 +64,16 @@ router.get('/key', (req, res) => {
 // Es una funcionalidad que no se controla con un servicio REST, sino que se hace desde
 // el lado del servidor por seguridad, pero por fines educativos lo hacemos de esta manera
 router.post('/push', (req, res) => {
-  res.json('Notificación push');
+
+  const notificacion = {
+    titulo: req.body.titulo,
+    cuerpo: req.body.cuerpo,
+    usuario: req.body.usuario
+  };
+
+  push.sendPush( notificacion );
+
+  res.json(notificacion);
 });
 
 module.exports = router;
