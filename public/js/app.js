@@ -253,7 +253,6 @@ const notificarme = () => {
 
 // Función que muestra en pantalla los botones de las notificaciones
 const verificaSuscripcion = (activadas) => {
-    console.log( activadas );
     // si las notificaciones están activadas
     if(activadas) {
         btnActivadas.removeClass('oculto');
@@ -298,8 +297,20 @@ btnDesactivadas.on('click', () => {
                 body: JSON.stringify( suscripcion )
             })
             .then( verificaSuscripcion )
-            .catch( console.log );
+            .catch( cancelarSuscripcion );
             
         });
     });
 });
+
+const cancelarSuscripcion = () => {
+    swRegister.pushManager.getSubscription()
+    .then(subs => {
+        subs.unsubscribe()
+        .then(() => verificaSuscripcion(false));
+    })
+};
+
+btnActivadas.on('click', () => {
+    cancelarSuscripcion();
+})
