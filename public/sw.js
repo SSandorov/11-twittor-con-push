@@ -139,8 +139,6 @@ self.addEventListener('push', e => {
 
     const data = JSON.parse( e.data.text() );
 
-    console.log(data);
-
     const title = data.titulo;
     const options = {
         body: data.cuerpo,
@@ -149,8 +147,40 @@ self.addEventListener('push', e => {
         badge: 'img/favicon.ico',
         image: 'https://datainfox.com/wp-content/uploads/2017/10/avengers-tower.jpg',
         vibrate: [500,110,500,110,450,110,200,110,170,40,450,110,200,110,170,40,500],
-        openUrl: '/'
+        openUrl: '/',
+        data: {
+            url: 'https://google.com',
+            id: data.usuario
+        },
+        actions: [
+            {
+                action: 'thor-action',
+                title: 'Thor',
+                icon: 'img/avatar/thor.jpg'
+            },
+            {
+                action: 'ironman-action',
+                title: 'Ironman',
+                icon: 'img/avatar/ironman.jpg'
+            }
+
+        ]
     };
 
     e.waitUntil( self.registration.showNotification(title, options) );
+});
+
+// cuando se cierra la notificación
+self.addEventListener('notificationclose', e => {
+    console.log('Notificación cerrada', e);
+});
+
+// cuando se hace click sobre la notificación
+self.addEventListener('notificationclick', e => {
+    const notificacion = e.notification;
+    const accion = e.action;
+
+    console.log({ notificacion, accion });
+
+    notificacion.close();
 });
