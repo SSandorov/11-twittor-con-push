@@ -149,7 +149,7 @@ self.addEventListener('push', e => {
         vibrate: [500,110,500,110,450,110,200,110,170,40,450,110,200,110,170,40,500],
         openUrl: '/',
         data: {
-            url: 'https://google.com',
+            url: '/',
             id: data.usuario
         },
         actions: [
@@ -182,5 +182,25 @@ self.addEventListener('notificationclick', e => {
 
     console.log({ notificacion, accion });
 
-    notificacion.close();
+    // al hacer click en la notificación:
+    // - que nos abra la app en caso de que no esté abierta y que nos lleva a la 
+    // pestaña correcta
+    // - que nos lleve a la pestaña correcta en caso de que esté abierta la app
+    const respuesta = clients.matchAll()
+    .then( clientes => {
+        let cliente = clientes.find( cliente => {
+            return cliente.visibilityState === 'visible';
+        } );
+        if (cliente !== undefined) {
+            cliente.navigate( notificacion.data.url );
+            cliente.focus();
+        } else {
+            clients.openWindow(notificacion.data.url);
+        }
+
+        return notificacion.close();
+    } );
+
+    e.waitUntil( respuesta );
+
 });
